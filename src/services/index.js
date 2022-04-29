@@ -5,12 +5,10 @@
  */
 
 module.exports = {
-    NODE_ENV: require('./NODE_ENV'), // Do not comment this, Used in many services
     winston: require('./winston'),
     firebaseAdmin: require('./firebase-admin'),
     jwt: require('./jwt'),
     bcryptjs: require('./bcryptjs'),
-    aws: require('./aws-sdk'),
     nodemailer: require('./nodemailer'),
 };
 

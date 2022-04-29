@@ -11,12 +11,23 @@ const express = require('express'),
     response = require('./src/utils/response'),
     { randomDigit } = require('./src/utils/random')
 
+const serverUpTime = new Date();
+
 // Console Clear
 console.clear() // Comment this for Continuos logging
 
 // Environment Checker
-app.use(require('./src/services/NODE_ENV'));
-logger.info(`Server: \x1b[32m\x1b[1m PORT: ${process.env.PORT || 80} \x1b[0m || \x1b[32m\x1b[1m NODE_ENV: ${process.env.NODE_ENV || '\x1b[31m\x1b[1m NODE_ENV NOT FOUND'} \x1b[0m`)
+require('dotenv').config({ override: false })
+try {
+    if (process.env.NODE_ENV == undefined) {
+        throw new Error('\x1b[31m\x1b[1m NODE_ENV NOT FOUND. Please Set NODE_ENV and PORT to make it run \x1b[0m')
+    }
+    logger.info(`Server: \x1b[32m\x1b[1m PORT: ${process.env.PORT} \x1b[0m || \x1b[32m\x1b[1m NODE_ENV: ${process.env.NODE_ENV || '\x1b[31m\x1b[1m NODE_ENV NOT FOUND'} \x1b[0m`)
+} catch (e) {
+    console.log(e.message)
+    process.exit(1)
+}
+
 
 // Body Parser
 app.use(express.urlencoded({ extended: true }), express.json(), (error, req, res, next) => {
@@ -72,17 +83,20 @@ Query: ${JSON.stringify(req.query)}
 
 // App Health Check
 app.get(['/', '/health'], (req, res) => {
-    return res.status(httpStatus.OK).json({
+    return response(res, httpStatus.OK, 'success', {
         message: 'Health: OK',
+        environment: process.env.NODE_ENV,
         app: packageInfo.name,
         version: packageInfo.version,
         description: packageInfo.description,
         author: packageInfo.author,
         license: packageInfo.license,
-        homepage: packageInfo.homepage,
-        repository: packageInfo.repository,
-        contributors: packageInfo.contributors
-    });
+        time_info: {
+            timezone: serverUpTime.toLocaleDateString(undefined, { day: '2-digit', timeZoneName: 'long' }).substring(4),
+            server_uptime: { Date: serverUpTime, locale_string: serverUpTime.toLocaleString() },
+            server_time: { Date: new Date(), locale_string: new Date().toLocaleString() }
+        }
+    })
 })
 
 app.use((req, res) => { return response(res, httpStatus.METHOD_NOT_ALLOWED, 'Invalid API/Method. Please check HTTP Method.') })

@@ -7,24 +7,31 @@
  */
 
 const nodemailer = require('nodemailer'),
-    { nodemailer: nodemailerSecret } = require('../../config/secrets.json'),
     { logging } = require('../../config/default.json'),
     logger = require('../winston')
+const env_prefix = require('../../common').env_prefix()
+
+const nodemailerSecret = {
+    smtp: process.env[env_prefix + 'nodemailer_smtp'],
+    port: process.env[env_prefix + 'nodemailer_port'],
+    user: process.env[env_prefix + 'nodemailer_email'],
+    pass: process.env[env_prefix + 'nodemailer_password'],
+}
 
 // Check Secret
-if (!nodemailerSecret[process.env.NODE_ENV] || !nodemailerSecret[process.env.NODE_ENV].smtp || !nodemailerSecret[process.env.NODE_ENV].email || !nodemailerSecret[process.env.NODE_ENV].password) {
-    return logger.error('Service [NODEMAILER]: SMTP or Email or Password not found for current environment')
+if (nodemailerSecret || nodemailerSecret.smtp || nodemailerSecret.email || nodemailerSecret.password) {
+    logger.error('Service [NODEMAILER]: SMTP or Email or Password not found for current environment')
 }
 
 let transporter = nodemailer.createTransport({
-    service: nodemailerSecret[process.env.NODE_ENV].smtp || 'gmail',
-    port: nodemailerSecret[process.env.NODE_ENV].port || 465,
+    service: nodemailerSecret.smtp || 'gmail',
+    port: nodemailerSecret.port || 465,
     secure: true,
-    debug: true,
+    debug: false,
     logger: true,
     auth: {
-        user: nodemailerSecret[process.env.NODE_ENV].email,
-        pass: nodemailerSecret[process.env.NODE_ENV].password,
+        user: nodemailerSecret.email,
+        pass: nodemailerSecret.password,
     },
 });
 
