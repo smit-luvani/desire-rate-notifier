@@ -7,14 +7,10 @@
 module.exports = {
     NODE_ENV: require('./NODE_ENV'), // Do not comment this, Used in many services
     winston: require('./winston'),
-    mongoose: require('./mongoose'),
     firebaseAdmin: require('./firebase-admin'),
     jwt: require('./jwt'),
     bcryptjs: require('./bcryptjs'),
-    razorpay: require('./razorpay'),
     aws: require('./aws-sdk'),
-    multerS3: require('./multer-s3'),
-    multer: require('./multer'),
     nodemailer: require('./nodemailer'),
 };
 
