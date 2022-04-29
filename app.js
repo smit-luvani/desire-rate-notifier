@@ -1,3 +1,8 @@
+/**
+ * Author: Smit Luvani
+ * Description: This is the main file for the application.
+ */
+
 const express = require('express'),
     app = express(),
     httpStatus = require('http-status'),
@@ -24,10 +29,6 @@ app.use(express.urlencoded({ extended: true }), express.json(), (error, req, res
     next()
 })
 
-// Multipart form data parser. Remove this , If you want to use multer
-// const multipartParser = require('express-fileupload')
-// app.use(multipartParser())
-
 // Cookie Parser
 app.use(require('cookie-parser')())
 
@@ -49,27 +50,25 @@ app.use((req, res, next) => {
         res._requestID = requestID;
         res._requestTime = new Date();
 
-        logger.debug(`
-        Request: 
-        Request ID: ${res._requestID} | IP: ${(req.headers[ 'x-forwarded-for' ] || req.socket.remoteAddress).split(",")[0]}
-        Path: ${req.path} | Method: ${req.method}
-        header: ${JSON.stringify(req.headers)}
-        Body: ${JSON.stringify(req.body)}
-        Query: ${JSON.stringify(req.query)}
-        Cookie: ${JSON.stringify(req.cookies)}
-        `)
+        let header = {...req.headers }
+        delete header.authorization
+        header = JSON.stringify(header)
+
+        logger.info(`
+--------------- INCOMING REQUEST ---------------------------------------------
+Request ID: ${res._requestID} | IP: ${(req.headers[ 'x-forwarded-for' ] || req.socket.remoteAddress).split(",")[0]}
+Headers [MAY CONTAINS SECRETS]: ${header}
+Path: ${req.path} | Method: ${req.method}
+Body: ${JSON.stringify(req.body)}
+Query: ${JSON.stringify(req.query)}
+------------------------------------------------------------------------------`)
 
         next();
     } catch (error) {
-        return response(res, httpStatus.INTERNAL_SERVER_ERROR, error.message || 'Request Logger Error', error)
+        logger.error(error.message)
+        return response(res, httpStatus.BAD_REQUEST, 'URIError: Invalid URI/ URL. URI/ URL may contain invalid character.')
     }
 })
-
-// To Use Service from All Services
-// const { bcryptjs } = require('./src/services/index') // Go To file for Enable/Disable Service
-
-// To Use Particular Service
-// const jwt = require('./src/services/jwt')
 
 // App Health Check
 app.get(['/', '/health'], (req, res) => {
