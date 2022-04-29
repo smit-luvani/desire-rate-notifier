@@ -1,22 +1,32 @@
 {
-    "name": "express-forster",
-    "version": "1.0.0",
-    "description": "This template is based on Node JS Express Framework basically made out for reusability purpose.",
-    "main": "index.js",
+    "name": "desire-rate-notifier",
+    "version": "0.1.0",
+    "description": "This project is explicitly made to notify users of specific price changes on the chosen products, stock and currency exchanges.",
+    "keywords": [
+        "rate",
+        "notifier",
+        "price",
+        "change",
+        "product",
+        "stock",
+        "exchange",
+        "currency",
+        "telegram-bot"
+    ],
+    "main": "server.js",
     "scripts": {
         "start": "nodemon server.js"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/smit-luvani/express-forster"
+        "url": "https://github.com/smit-luvani/desire-rate-notifier"
     },
     "author": "Smit Luvani",
     "license": "MIT License",
-    "homepage": "https://github.com/smit-luvani/express-forster#readme",
+    "homepage": "https://github.com/smit-luvani/desire-rate-notifier#readme",
     "dependencies": {
         "aws-sdk": "^2.999.0",
         "bcryptjs": "^2.4.3",
-        "bestzip": "^2.2.0",
         "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
         "express": "^4.17.1",
