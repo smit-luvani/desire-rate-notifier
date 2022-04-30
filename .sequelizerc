@@ -1,0 +1,6 @@
+module.exports = {
+    'config': process.cwd() + '/src/database/config/config.js',
+    'models-path': process.cwd() + '/src/database/models',
+    'seeders-path': process.cwd() + '/src/database/seeders',
+    'migrations-path': process.cwd() + '/src/database/migrations'
+};
