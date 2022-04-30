@@ -10,6 +10,8 @@ module.exports = {
     jwt: require('./jwt'),
     bcryptjs: require('./bcryptjs'),
     nodemailer: require('./nodemailer'),
+    postgres: require('./postgres'),
+    sequelize: require('./sequelize'),
 };
 
 // To Disable, Use Single Line Comment
