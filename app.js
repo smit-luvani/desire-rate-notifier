@@ -99,6 +99,33 @@ app.get(['/', '/health'], (req, res) => {
     })
 })
 
+
+// Routes
+
+const { telegramRoutes } = require('./src/routes')
+
+app.use('/api/telegram/v1', telegramRoutes)
+
 app.use((req, res) => { return response(res, httpStatus.METHOD_NOT_ALLOWED, 'Invalid API/Method. Please check HTTP Method.') })
 
 module.exports = app;
+
+// const req = unirest("GET", "https://currency-exchange.p.rapidapi.com/exchange");
+
+// req.query({
+//     "from": "EUR",
+//     "to": "INR",
+//     "q": "1.0"
+// });
+
+// req.headers({
+//     "X-RapidAPI-Host": "currency-exchange.p.rapidapi.com",
+//     "X-RapidAPI-Key": "d78d3ec461msh20d095d98ebed24p135424jsn5c1f61ad45c5",
+//     "useQueryString": true
+// });
+
+// req.end(function(res) {
+//     if (res.error) throw new Error(res.error);
+
+//     console.log({ status: res.status, i, price: res.raw_body });
+// });

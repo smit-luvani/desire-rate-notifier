@@ -1,5 +1,4 @@
 // Export All Controller
+const telegramController = require('./telegram');
 
-const razorpayController = require('./razorpay')
-
-module.exports = { razorpayController }
+module.exports = { telegramController }

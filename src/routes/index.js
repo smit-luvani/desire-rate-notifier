@@ -1,1 +1,4 @@
-// Import Controller and Allocate Route
+// Export All Routes
+const telegramRoutes = require('./telegram.routes');
+
+module.exports = { telegramRoutes }
